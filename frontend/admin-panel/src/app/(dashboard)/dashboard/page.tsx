@@ -1,90 +1,71 @@
 'use client';
 
-import { Users, UserPlus, UserCheck, UserX } from 'lucide-react';
-import { StatsCard } from '@/components/shared/StatsCard';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useUsers } from '@/lib/hooks/useUsers';
-import { UserStatus } from '@/types/api';
+import { RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useStatistics } from '@/lib/hooks/useStatistics';
+import {
+  QuickStats,
+  RegistrationChart,
+  ActivityChart,
+  StatusDistribution,
+  RecentUsersList,
+} from '@/components/dashboard';
 
 export default function DashboardPage() {
-  const { data: usersData, isLoading } = useUsers({ pageSize: 1 });
-
-  // Для демо используем примерные данные
-  const stats = [
-    {
-      title: 'Всего пользователей',
-      value: usersData?.total || 0,
-      icon: Users,
-      description: 'Зарегистрировано в системе',
-    },
-    {
-      title: 'Активных',
-      value: '—',
-      icon: UserCheck,
-      description: 'Статус активен',
-      trend: { value: 12, isPositive: true },
-    },
-    {
-      title: 'Новых за неделю',
-      value: '—',
-      icon: UserPlus,
-      description: 'Последние 7 дней',
-    },
-    {
-      title: 'Заблокированных',
-      value: '—',
-      icon: UserX,
-      description: 'Требуют внимания',
-    },
-  ];
+  const { data: stats, isLoading, refetch, isFetching } = useStatistics();
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Обзор системы управления пользователями
-        </p>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">
+            Обзор системы управления пользователями
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => refetch()}
+          disabled={isFetching}
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`} />
+          Обновить
+        </Button>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <StatsCard
-            key={stat.title}
-            title={stat.title}
-            value={stat.value}
-            icon={stat.icon}
-            description={stat.description}
-            trend={stat.trend}
-            isLoading={isLoading}
-          />
-        ))}
-      </div>
+      {/* Quick Stats */}
+      <QuickStats stats={stats} isLoading={isLoading} />
 
-      {/* Recent Activity */}
+      {/* Charts Row */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Недавние регистрации</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Здесь будут отображаться последние зарегистрированные пользователи
-            </p>
-          </CardContent>
-        </Card>
+        <RegistrationChart
+          data={stats?.registrations_last_30_days || []}
+          isLoading={isLoading}
+        />
+        <ActivityChart
+          data={stats?.activity_last_7_days || []}
+          isLoading={isLoading}
+        />
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Активность</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Здесь будет отображаться график активности пользователей
-            </p>
-          </CardContent>
-        </Card>
+      {/* Bottom Row */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <StatusDistribution
+          data={stats?.status_stats || {
+            active: 0,
+            inactive: 0,
+            suspended: 0,
+            locked: 0,
+            pending_verification: 0,
+          }}
+          isLoading={isLoading}
+        />
+        <RecentUsersList
+          users={stats?.recent_users || []}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

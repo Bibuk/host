@@ -205,3 +205,47 @@ export interface AuditLog {
   status: 'success' | 'failure';
   created_at: string;
 }
+
+// Statistics types
+export interface UserStatusStats {
+  active: number;
+  inactive: number;
+  suspended: number;
+  locked: number;
+  pending_verification: number;
+}
+
+export interface DailyRegistrations {
+  date: string;
+  count: number;
+}
+
+export interface DailyActivity {
+  date: string;
+  active_users: number;
+  new_registrations: number;
+}
+
+export interface RecentUser {
+  id: string;
+  email: string;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  status: string;
+  created_at: string;
+}
+
+export interface DashboardStatistics {
+  total_users: number;
+  active_users: number;
+  new_users_week: number;
+  new_users_month: number;
+  blocked_users: number;
+  status_stats: UserStatusStats;
+  weekly_trend: number;
+  monthly_trend: number;
+  registrations_last_30_days: DailyRegistrations[];
+  activity_last_7_days: DailyActivity[];
+  recent_users: RecentUser[];
+}
