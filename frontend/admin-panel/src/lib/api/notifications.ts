@@ -50,27 +50,27 @@ export interface ListNotificationsParams {
 export const notificationsApi = {
   // List all notifications (admin)
   list: (params: ListNotificationsParams = {}) =>
-    apiClient.get<PaginatedResponse<Notification>>('/notifications', { params }),
+    apiClient.get<PaginatedResponse<Notification>>('/notifications/admin/list', { params }),
 
-  // Get notification statistics
+  // Get notification statistics (admin)
   getStats: () =>
-    apiClient.get<NotificationStatsResponse>('/notifications/stats'),
+    apiClient.get<NotificationStatsResponse>('/notifications/admin/stats'),
 
-  // Send notification to specific users
+  // Send notification to specific users (admin)
   send: (data: SendNotificationRequest) =>
-    apiClient.post<SendNotificationResponse>('/notifications/send', data),
+    apiClient.post<SendNotificationResponse>('/notifications/admin/send', data),
 
-  // Broadcast notification to all users
+  // Broadcast notification to all users (admin)
   broadcast: (data: BroadcastNotificationRequest) =>
-    apiClient.post<SendNotificationResponse>('/notifications/broadcast', data),
+    apiClient.post<SendNotificationResponse>('/notifications/admin/broadcast', data),
 
-  // Delete single notification
+  // Delete single notification (admin)
   delete: (id: string) =>
-    apiClient.delete<MessageResponse>(`/notifications/${id}`),
+    apiClient.delete<MessageResponse>(`/notifications/admin/${id}`),
 
-  // Delete multiple notifications
+  // Delete multiple notifications (admin)
   deleteMany: (ids: string[]) =>
-    apiClient.delete<MessageResponse>('/notifications', {
+    apiClient.delete<MessageResponse>('/notifications/admin/bulk', {
       params: { notification_ids: ids },
     }),
 };
