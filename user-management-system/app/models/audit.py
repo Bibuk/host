@@ -50,7 +50,13 @@ class AuditLog(Base, UUIDMixin):
     )
     
     status: Mapped[AuditStatus] = mapped_column(
-        SQLEnum(AuditStatus, name="audit_status", create_constraint=True),
+        SQLEnum(
+            AuditStatus,
+            name="audit_status",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=AuditStatus.SUCCESS,
         nullable=False,
     )

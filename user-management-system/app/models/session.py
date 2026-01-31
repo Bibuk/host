@@ -49,7 +49,13 @@ class Session(Base, UUIDMixin):
     )
     
     device_type: Mapped[DeviceType] = mapped_column(
-        SQLEnum(DeviceType, name="device_type", create_constraint=True),
+        SQLEnum(
+            DeviceType,
+            name="device_type",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=DeviceType.WEB,
         nullable=False,
     )

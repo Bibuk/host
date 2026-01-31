@@ -26,12 +26,24 @@ class Permission(Base, UUIDMixin):
     )
     
     action: Mapped[PermissionAction] = mapped_column(
-        SQLEnum(PermissionAction, name="permission_action", create_constraint=True),
+        SQLEnum(
+            PermissionAction,
+            name="permission_action",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         nullable=False,
     )
     
     scope: Mapped[PermissionScope] = mapped_column(
-        SQLEnum(PermissionScope, name="permission_scope", create_constraint=True),
+        SQLEnum(
+            PermissionScope,
+            name="permission_scope",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=PermissionScope.GLOBAL,
         nullable=False,
     )

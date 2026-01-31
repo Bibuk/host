@@ -64,7 +64,13 @@ class User(Base, UUIDMixin, TimestampMixin, SoftDeleteMixin):
     
     # Status fields
     status: Mapped[UserStatus] = mapped_column(
-        SQLEnum(UserStatus, name="user_status", create_constraint=True),
+        SQLEnum(
+            UserStatus,
+            name="user_status",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=UserStatus.PENDING_VERIFICATION,
         nullable=False,
         index=True,

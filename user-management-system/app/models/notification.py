@@ -36,13 +36,25 @@ class Notification(Base, UUIDMixin):
     )
     
     type: Mapped[NotificationType] = mapped_column(
-        SQLEnum(NotificationType, name="notification_type", create_constraint=True),
+        SQLEnum(
+            NotificationType,
+            name="notification_type",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=NotificationType.PERSONAL,
         nullable=False,
     )
     
     priority: Mapped[NotificationPriority] = mapped_column(
-        SQLEnum(NotificationPriority, name="notification_priority", create_constraint=True),
+        SQLEnum(
+            NotificationPriority,
+            name="notification_priority",
+            create_constraint=False,
+            native_enum=True,
+            values_callable=lambda x: [e.value for e in x]
+        ),
         default=NotificationPriority.NORMAL,
         nullable=False,
     )
