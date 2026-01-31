@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import get_current_user, require_permission
-from app.core.exceptions import NotFoundError, ForbiddenError
+from app.core.exceptions import NotFoundError, AuthorizationError
 from app.models.user import User
 from app.models.notification import Notification
 from app.models.enums import NotificationType, NotificationPriority, UserStatus
@@ -221,7 +221,7 @@ async def get_notification(
     
     # Check ownership
     if notification.user_id != current_user.id:
-        raise ForbiddenError("You can only access your own notifications")
+        raise AuthorizationError("You can only access your own notifications")
     
     return NotificationResponse.model_validate(notification)
 
@@ -248,7 +248,7 @@ async def mark_notification_as_read(
     
     # Check ownership
     if notification.user_id != current_user.id:
-        raise ForbiddenError("You can only mark your own notifications as read")
+        raise AuthorizationError("You can only mark your own notifications as read")
     
     notification.read = True
     notification.read_at = datetime.now(timezone.utc)
@@ -332,7 +332,7 @@ async def delete_my_notification(
     
     # Check ownership
     if notification.user_id != current_user.id:
-        raise ForbiddenError("You can only delete your own notifications")
+        raise AuthorizationError("You can only delete your own notifications")
     
     await db.delete(notification)
     await db.commit()
