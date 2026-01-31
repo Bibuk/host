@@ -1,0 +1,42 @@
+services:
+  user-app:
+    image: node:20-alpine
+    container_name: frontend_user_app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./user-app:/app
+      - user_app_node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+    restart: unless-stopped
+    networks:
+      - frontend_network
+
+  admin-panel:
+    image: node:20-alpine
+    container_name: frontend_admin_panel
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./admin-panel:/app
+      - admin_panel_node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+    restart: unless-stopped
+    networks:
+      - frontend_network
+
+volumes:
+  user_app_node_modules:
+  admin_panel_node_modules:
+
+networks:
+  frontend_network:
+    driver: bridge

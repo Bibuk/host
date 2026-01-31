@@ -1,0 +1,17 @@
+# Simple runtime-only image
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install only Next.js CLI globally
+RUN npm install -g next
+
+# Copy everything (including node_modules if present)
+COPY user-app ./user-app
+COPY admin-panel ./admin-panel
+
+WORKDIR /app/user-app
+
+# Use dev mode (no build needed)
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,48 @@
+services:
+  user-app:
+    build:
+      context: ./user-app
+      dockerfile: Dockerfile
+    container_name: frontend_user_app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+    volumes:
+      - ./user-app/src:/app/src
+      - ./user-app/public:/app/public
+    restart: unless-stopped
+    networks:
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  admin-panel:
+    build:
+      context: ./admin-panel
+      dockerfile: Dockerfile
+    container_name: frontend_admin_panel
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+    volumes:
+      - ./admin-panel/src:/app/src
+      - ./admin-panel/public:/app/public
+    restart: unless-stopped
+    networks:
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  frontend_network:
+    driver: bridge
