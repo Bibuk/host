@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, users, statistics
+from app.api.v1.endpoints import auth, users, statistics, notifications
 
 router = APIRouter()
 
@@ -10,3 +10,4 @@ router = APIRouter()
 router.include_router(auth.router)
 router.include_router(users.router)
 router.include_router(statistics.router)
+router.include_router(notifications.router)
