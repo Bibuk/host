@@ -152,6 +152,8 @@ export interface Notification {
   priority: NotificationPriority;
   title: string;
   message: string;
+  is_read: boolean;
   read_at: string | null;
   created_at: string;
 }
+
