@@ -23,7 +23,7 @@ from app.schemas.auth import (
 )
 from app.schemas.user import UserResponse
 from app.schemas.base import MessageResponse
-from app.tasks.email_tasks import send_verification_email
+# from app.tasks.email_tasks import send_verification_email
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -54,8 +54,8 @@ async def register(
     user = await auth_service.register(data, ip_address)
     
     # Send verification email via Celery task
-    verification_token = generate_verification_token(str(user.id), "email_verification")
-    send_verification_email.delay(user.email, verification_token)
+    # verification_token = generate_verification_token(str(user.id), "email_verification")
+    # send_verification_email.delay(user.email, verification_token)
     
     return user
 
