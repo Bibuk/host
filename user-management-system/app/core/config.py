@@ -56,11 +56,11 @@ class Settings(BaseSettings):
     SMTP_TLS: bool = True
     
     # Frontend URLs (for email links)
-    FRONTEND_URL: str = "http://localhost:3000"
-    ADMIN_FRONTEND_URL: str = "http://localhost:3001"
+    FRONTEND_URL: str = "http://83.222.18.214:3000"
+    ADMIN_FRONTEND_URL: str = "http://83.222.18.214:3001"
     
     # CORS
-    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:3001,http://localhost:8080,http://host.docker.internal:3000,http://host.docker.internal:3001"
+    CORS_ORIGINS: str = "http://localhost:3000,http://localhost:3001,http://localhost:8080,http://host.docker.internal:3000,http://host.docker.internal:3001,http://83.222.18.214:3000,http://83.222.18.214:3001,http://83.222.18.214:8000"
     
     # Rate Limiting
     RATE_LIMIT_ENABLED: bool = True
