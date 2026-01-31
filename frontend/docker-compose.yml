@@ -8,7 +8,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+      - NEXT_PUBLIC_API_URL=http://83.222.18.214:8000/api/v1
     volumes:
       - ./user-app/src:/app/src
       - ./user-app/public:/app/public
@@ -30,7 +30,7 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://host.docker.internal:8000/api/v1
+      - NEXT_PUBLIC_API_URL=http://83.222.18.214:8000/api/v1
     volumes:
       - ./admin-panel/src:/app/src
       - ./admin-panel/public:/app/public
